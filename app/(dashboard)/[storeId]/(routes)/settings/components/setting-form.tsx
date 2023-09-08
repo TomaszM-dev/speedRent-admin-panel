@@ -1,11 +1,9 @@
 "use client";
-
 import { Store } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { AlertModal } from "@/components/modals/alert-modal";
 
 const formShema = z.object({
   name: z.string().min(2),
@@ -54,8 +53,32 @@ export const SettingsForm = ({ initialData }: { initialData: Store }) => {
       setLoading(false);
     }
   };
+
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/stores/${params.storeId}`);
+      router.refresh();
+      router.push("/");
+      toast.success("Store Deleted");
+    } catch (error) {
+      toast.error("Make sure you removed add products and categories first");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        onConfirm={() => {
+          onDelete();
+        }}
+        loading={loading}
+      />
       <div className="flex items-center justify-between">
         <Heading
           title="Settings"
