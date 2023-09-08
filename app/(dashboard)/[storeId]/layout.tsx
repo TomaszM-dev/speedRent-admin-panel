@@ -24,10 +24,5 @@ export default async function Dashboard({
   if (!store) {
     redirect("/");
   }
-  return (
-    <>
-      <div>this will be navbar</div>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
