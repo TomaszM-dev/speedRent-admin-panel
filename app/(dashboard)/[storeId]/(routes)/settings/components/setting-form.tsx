@@ -21,6 +21,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { ApiAlert } from "@/components/ui/api-alert";
 
 const formShema = z.object({
   name: z.string().min(2),
@@ -123,6 +124,7 @@ export const SettingsForm = ({ initialData }: { initialData: Store }) => {
           </Button>
         </form>
       </Form>
+      <ApiAlert title="NEXT_PUBLIC_API_URL" description="" />
     </>
   );
 };
