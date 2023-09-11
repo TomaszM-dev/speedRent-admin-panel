@@ -38,7 +38,7 @@ export async function POST(
       return new NextResponse("StoreId is required", { status: 400 });
     }
 
-    const billboard = await prismadb.store.create({
+    const billboard = await prismadb.billboard.create({
       data: { label, imageUrl, storeId: params.storeId },
     });
 
