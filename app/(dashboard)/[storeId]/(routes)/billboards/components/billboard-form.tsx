@@ -59,9 +59,16 @@ export const BillboardForm = ({
   const onSubmit = async (data: BillboardValueForm) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId}`, data);
+      if (initialData) {
+        await axios.patch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          data
+        );
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, data);
+      }
       router.refresh();
-      toast.success("Store updated");
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -72,13 +79,16 @@ export const BillboardForm = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeId}`);
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboard}`
+      );
       router.refresh();
       router.push("/");
       toast.success("Store Deleted");
     } catch (error) {
-      toast.error("Make sure you removed add products and categories first");
+      toast.error("Make sure you removed all categories ");
     } finally {
+      setOpen(false);
       setLoading(false);
     }
   };
