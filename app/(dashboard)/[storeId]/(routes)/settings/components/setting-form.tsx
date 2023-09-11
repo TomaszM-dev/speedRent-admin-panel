@@ -22,6 +22,7 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
+import { useOrigin } from "@/hooks/use-origin";
 
 const formShema = z.object({
   name: z.string().min(2),
@@ -32,6 +33,7 @@ type SettingsValueForm = z.infer<typeof formShema>;
 export const SettingsForm = ({ initialData }: { initialData: Store }) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -39,8 +41,6 @@ export const SettingsForm = ({ initialData }: { initialData: Store }) => {
     resolver: zodResolver(formShema),
     defaultValues: initialData,
   });
-
-  console.log(params);
 
   const onSubmit = async (data: SettingsValueForm) => {
     try {
@@ -124,7 +124,11 @@ export const SettingsForm = ({ initialData }: { initialData: Store }) => {
           </Button>
         </form>
       </Form>
-      <ApiAlert title="NEXT_PUBLIC_API_URL" description="" />
+      <ApiAlert
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${params.storeId}`}
+        variant="public"
+      />
     </>
   );
 };
