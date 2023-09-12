@@ -24,6 +24,14 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { isIfStatement } from "typescript";
 
 const formShema = z.object({
   name: z.string().min(2),
@@ -60,8 +68,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     },
   });
 
-  console.log(initialData);
-
   const onSubmit = async (data: CategoryValueProps) => {
     try {
       setLoading(true);
@@ -87,18 +93,21 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     try {
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/categories/${params.category}`
+        `/api/${params.storeId}/categories/${params.categoryId}`
       );
       router.refresh();
-      router.push("/");
-      toast.success("Store Deleted");
-    } catch (error) {
-      toast.error("Make sure you removed all categories ");
+      router.push(`/${params.storeId}/categories`);
+      toast.success("Category deleted.");
+    } catch (error: any) {
+      toast.error(
+        "Make sure you removed all products using this category first."
+      );
     } finally {
-      setOpen(false);
       setLoading(false);
+      setOpen(false);
     }
   };
+
   return (
     <>
       <AlertModal
@@ -144,6 +153,40 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="billboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Billboard</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder={"Select a billboard"}
+                        ></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {billboards.map((item) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.label}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

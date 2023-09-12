@@ -81,16 +81,18 @@ export const BillboardForm = ({
     try {
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboard}`
+        `/api/${params.storeId}/billboards/${params.billboardId}`
       );
       router.refresh();
-      router.push("/");
-      toast.success("Store Deleted");
-    } catch (error) {
-      toast.error("Make sure you removed all categories ");
+      router.push(`/${params.storeId}/billboards`);
+      toast.success("Billboard deleted.");
+    } catch (error: any) {
+      toast.error(
+        "Make sure you removed all categories using this billboard first."
+      );
     } finally {
-      setOpen(false);
       setLoading(false);
+      setOpen(false);
     }
   };
   return (
@@ -100,9 +102,7 @@ export const BillboardForm = ({
         onClose={() => {
           setOpen(false);
         }}
-        onConfirm={() => {
-          onDelete();
-        }}
+        onConfirm={onDelete}
         loading={loading}
       />
       <div className="flex items-center justify-between">
