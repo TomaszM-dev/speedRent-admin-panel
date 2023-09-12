@@ -166,11 +166,6 @@ export const BillboardForm = ({
           </Button>
         </form>
       </Form>
-      <ApiAlert
-        title="NEXT_PUBLIC_API_URL"
-        description={`${origin}/api/${params.storeId}`}
-        variant="public"
-      />
     </>
   );
 };
