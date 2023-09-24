@@ -1,12 +1,12 @@
 import prismadb from "@/lib/prismadb";
 import React from "react";
-import { ColorClient } from "./components/client";
+import { TypeClient } from "./components/client";
 
 import { format } from "date-fns";
-import { ColorColumn } from "./components/columns";
+import { TypeColumn } from "./components/columns";
 
-const ColorsPage = async ({ params }: { params: { storeId: string } }) => {
-  const colors = await prismadb.color.findMany({
+const TypesPage = async ({ params }: { params: { storeId: string } }) => {
+  const types = await prismadb.type.findMany({
     where: {
       storeId: params.storeId,
     },
@@ -15,7 +15,7 @@ const ColorsPage = async ({ params }: { params: { storeId: string } }) => {
     },
   });
 
-  const formattedColors: ColorColumn[] = colors.map((item) => ({
+  const formattedTypes: TypeColumn[] = types.map((item) => ({
     id: item.id,
     name: item.name,
     value: item.value,
@@ -24,10 +24,10 @@ const ColorsPage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 px-8 py-6">
-        <ColorClient data={formattedColors} />
+        <TypeClient data={formattedTypes} />
       </div>
     </div>
   );
 };
 
-export default ColorsPage;
+export default TypesPage;

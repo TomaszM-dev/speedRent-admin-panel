@@ -7,14 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { Billboard } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { ColorColumn, columns } from "./columns";
+import { TypeColumn, columns } from "./columns";
 import ApiList from "@/components/ui/api-list";
 
-interface ColorClientProps {
-  data: ColorColumn[];
+interface TypeClientProps {
+  data: TypeColumn[];
 }
 
-export const ColorClient: React.FC<ColorClientProps> = ({ data }) => {
+export const TypeClient: React.FC<TypeClientProps> = ({ data }) => {
   const router = useRouter();
   const params = useParams();
 
@@ -24,12 +24,12 @@ export const ColorClient: React.FC<ColorClientProps> = ({ data }) => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Colors (${data.length})`}
-          description="Menage colors for you store"
+          title={`Types (${data.length})`}
+          description="Menage types for you store"
         ></Heading>
         <Button
           onClick={() => {
-            router.push(`/${params.storeId}/colors/new`);
+            router.push(`/${params.storeId}/types/new`);
           }}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -38,8 +38,8 @@ export const ColorClient: React.FC<ColorClientProps> = ({ data }) => {
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="Api calls for Colors" />
-      <ApiList entityName="colors" entitityIdName="colorId" />
+      <Heading title="API" description="Api calls for Types" />
+      <ApiList entityName="types" entitityIdName="typeId" />
     </>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import { Color, Store } from "@prisma/client";
+import { Type, Store } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
@@ -27,46 +27,42 @@ import ImageUpload from "@/components/ui/image-upload";
 
 const formShema = z.object({
   name: z.string().min(2),
-  value: z.string().min(4).regex(/^#/, {
-    message: "String must be a valid hex code",
-  }),
 });
 
-type ColorValueForm = z.infer<typeof formShema>;
+type TypeValueForm = z.infer<typeof formShema>;
 
-export const ColorForm = ({ initialData }: { initialData: Color | null }) => {
+export const TypeForm = ({ initialData }: { initialData: Type | null }) => {
   const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Color " : "Create Color";
-  const description = initialData ? "Edit Color " : "Add a new Color";
-  const toastMessage = initialData ? "Color Updated " : "Color Created";
+  const title = initialData ? "Edit Type " : "Create Type";
+  const description = initialData ? "Edit Type " : "Add a new Type";
+  const toastMessage = initialData ? "Type Updated " : "Type Created";
   const action = initialData ? "Save Changes " : "Create ";
 
-  const form = useForm<ColorValueForm>({
+  const form = useForm<TypeValueForm>({
     resolver: zodResolver(formShema),
     defaultValues: initialData || {
       name: "",
-      value: "",
     },
   });
 
-  const onSubmit = async (data: ColorValueForm) => {
+  const onSubmit = async (data: TypeValueForm) => {
     try {
       setLoading(true);
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/colors/${params.colorId}`,
+          `/api/${params.storeId}/types/${params.typeId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/colors`, data);
+        await axios.post(`/api/${params.storeId}/types`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/colors`);
+      router.push(`/${params.storeId}/types`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
@@ -78,12 +74,12 @@ export const ColorForm = ({ initialData }: { initialData: Color | null }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
+      await axios.delete(`/api/${params.storeId}/types/${params.typeId}`);
       router.refresh();
-      router.push(`/${params.storeId}/colors`);
-      toast.success("Color deleted.");
+      router.push(`/${params.storeId}/types`);
+      toast.success("Type deleted.");
     } catch (error: any) {
-      toast.error("Make sure you removed all colors using this  first.");
+      toast.error("Make sure you removed all types using this  first.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -128,32 +124,9 @@ export const ColorForm = ({ initialData }: { initialData: Color | null }) => {
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder={`Color name`}
+                      placeholder={`Type name`}
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center gap-x-4">
-                      <Input
-                        disabled={loading}
-                        placeholder={`Color value`}
-                        {...field}
-                      />
-                      <div
-                        className="border p-4 rounded-full"
-                        style={{ backgroundColor: field.value }}
-                      />
-                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

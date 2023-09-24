@@ -5,36 +5,36 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { storeId: string; colorId: string } }
+  { params }: { params: { storeId: string; typeId: string } }
 ) {
   try {
-    if (!params.colorId) {
-      return new NextResponse("color is requierd", { status: 400 });
+    if (!params.typeId) {
+      return new NextResponse("type is requierd", { status: 400 });
     }
 
-    const color = await prismadb.color.findUnique({
+    const type = await prismadb.type.findUnique({
       where: {
-        id: params.colorId,
+        id: params.typeId,
       },
     });
 
-    return NextResponse.json(color);
+    return NextResponse.json(type);
   } catch (error) {
-    console.log("[COLOR_GET]", error);
+    console.log("[Type_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { storeId: string; colorId: string } }
+  { params }: { params: { storeId: string; typeId: string } }
 ) {
   try {
     const { userId } = auth();
 
     const body = await req.json();
 
-    const { name, value } = body;
+    const { name } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -43,11 +43,8 @@ export async function PATCH(
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
-    if (!value) {
-      return new NextResponse("Name is required", { status: 400 });
-    }
 
-    if (!params.colorId) {
+    if (!params.typeId) {
       return new NextResponse("Store id is requierd", { status: 400 });
     }
 
@@ -62,26 +59,25 @@ export async function PATCH(
       return new NextResponse("StoreId is required", { status: 400 });
     }
 
-    const color = await prismadb.color.updateMany({
+    const type = await prismadb.type.updateMany({
       where: {
-        id: params.colorId,
+        id: params.typeId,
       },
       data: {
         name,
-        value,
       },
     });
 
-    return NextResponse.json(color);
+    return NextResponse.json(type);
   } catch (error) {
-    console.log("[COLOR_PATCH]", error);
+    console.log("[Type_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { storeId: string; colorId: string } }
+  { params }: { params: { storeId: string; typeId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -90,17 +86,17 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (!params.colorId) {
-      return new NextResponse("color is requierd", { status: 400 });
+    if (!params.typeId) {
+      return new NextResponse("type is requierd", { status: 400 });
     }
 
-    const color = await prismadb.color.deleteMany({
+    const type = await prismadb.type.deleteMany({
       where: {
-        id: params.colorId,
+        id: params.typeId,
       },
     });
 
-    return NextResponse.json(color);
+    return NextResponse.json(type);
   } catch (error) {
     console.log("[BILLBOARD_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
