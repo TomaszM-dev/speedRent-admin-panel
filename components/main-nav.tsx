@@ -57,6 +57,11 @@ const MainNav = ({
       label: "Locations",
       active: pathname === `/${params.storeId}/locations`,
     },
+    {
+      href: `/${params.storeId}/rates`,
+      label: "Rates",
+      active: pathname === `/${params.storeId}/rates`,
+    },
   ];
 
   return (

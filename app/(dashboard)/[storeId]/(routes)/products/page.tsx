@@ -16,6 +16,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
       brand: true,
       type: true,
       location: true,
+      rate: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -34,6 +35,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     brand: item.brand.name,
     type: item.type.name,
     location: item.location.name,
+    rate: item.rate.value,
 
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));

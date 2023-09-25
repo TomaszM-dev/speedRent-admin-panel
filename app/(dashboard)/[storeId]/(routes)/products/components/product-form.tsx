@@ -6,6 +6,7 @@ import {
   Product,
   Brand,
   Location,
+  Rate,
 } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
@@ -49,6 +50,7 @@ const formShema = z.object({
   typeId: z.string().min(2),
   categoryId: z.string().min(2),
   locationId: z.string().min(2),
+  rateId: z.string().min(2),
 
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
@@ -66,6 +68,7 @@ interface ProductFormProps {
   types: Type[];
   brands: Brand[];
   locations: Location[];
+  rates: Rate[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
@@ -74,6 +77,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   types,
   brands,
   locations,
+  rates,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -102,6 +106,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           categoryId: "",
           typeId: "",
           brandId: "",
+          rateId: "",
           locationId: "",
           isFeatured: false,
           isArchived: false,
@@ -359,6 +364,40 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         return (
                           <SelectItem key={item.id} value={item.id}>
                             {item.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rateId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rate</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder={"Choose Rate"}
+                        ></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {rates?.map((item) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.value}
                           </SelectItem>
                         );
                       })}
