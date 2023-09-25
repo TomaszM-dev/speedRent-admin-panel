@@ -43,16 +43,6 @@ const MainNav = ({
       active: pathname === `/${params.storeId}/types`,
     },
     {
-      href: `/${params.storeId}/products`,
-      label: "Products",
-      active: pathname === `/${params.storeId}/products`,
-    },
-    {
-      href: `/${params.storeId}/orders`,
-      label: "Orders",
-      active: pathname === `/${params.storeId}/orders`,
-    },
-    {
       href: `/${params.storeId}/locations`,
       label: "Locations",
       active: pathname === `/${params.storeId}/locations`,
@@ -61,6 +51,21 @@ const MainNav = ({
       href: `/${params.storeId}/rates`,
       label: "Rates",
       active: pathname === `/${params.storeId}/rates`,
+    },
+    {
+      href: `/${params.storeId}/powers`,
+      label: "Power",
+      active: pathname === `/${params.storeId}/powers`,
+    },
+    {
+      href: `/${params.storeId}/products`,
+      label: "Products",
+      active: pathname === `/${params.storeId}/products`,
+    },
+    {
+      href: `/${params.storeId}/orders`,
+      label: "Orders",
+      active: pathname === `/${params.storeId}/orders`,
     },
   ];
 

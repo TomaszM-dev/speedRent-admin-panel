@@ -7,6 +7,7 @@ import {
   Brand,
   Location,
   Rate,
+  Power,
 } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,7 @@ const formShema = z.object({
   categoryId: z.string().min(2),
   locationId: z.string().min(2),
   rateId: z.string().min(2),
+  powerId: z.string().min(2),
 
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
@@ -69,6 +71,7 @@ interface ProductFormProps {
   brands: Brand[];
   locations: Location[];
   rates: Rate[];
+  powers: Power[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
@@ -78,6 +81,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   brands,
   locations,
   rates,
+  powers,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -108,6 +112,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           brandId: "",
           rateId: "",
           locationId: "",
+          powerId: "",
           isFeatured: false,
           isArchived: false,
         },
@@ -395,6 +400,40 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     </FormControl>
                     <SelectContent>
                       {rates?.map((item) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.value}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="powerId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Power</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder={"Choose Power"}
+                        ></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {powers?.map((item) => {
                         return (
                           <SelectItem key={item.id} value={item.id}>
                             {item.value}

@@ -25,6 +25,7 @@ model Store {
   orders     Order[]     @relation("StoreToOrder")
   locations  Location[]  @relation("StoreToLocation")
   rates      Rate[]      @relation("StoreToRate")
+  powers     Power[]     @relation("StoreToPower")
 }
 
 model Billboard {
@@ -109,6 +110,19 @@ model Rate {
   @@index([storeId])
 }
 
+model Power {
+  id      String @id @default(uuid())
+  storeId String
+  value   String
+  store   Store  @relation("StoreToPower", fields: [storeId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@index([storeId])
+}
+
 model Product {
   id         String      @id @default(uuid())
   storeId    String
@@ -129,11 +143,14 @@ model Product {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   location   Location @relation(fields: [locationId], references: [id])
+  power      Power    @relation(fields: [powerId], references: [id])
   rate       Rate     @relation(fields: [rateId], references: [id])
   locationId String
   rateId     String
+  powerId    String
 
   @@index([storeId])
+  @@index([powerId])
   @@index([locationId])
   @@index([rateId])
   @@index([brandId])
