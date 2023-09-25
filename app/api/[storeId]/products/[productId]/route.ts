@@ -19,8 +19,11 @@ export async function GET(
       include: {
         images: true,
         category: true,
-        color: true,
-        size: true,
+        brand: true,
+        type: true,
+        location: true,
+        power: true,
+        rate: true,
       },
     });
 
@@ -44,8 +47,11 @@ export async function PATCH(
       name,
       price,
       categoryId,
-      colorId,
-      sizeId,
+      brandId,
+      typeId,
+      locationId,
+      rateId,
+      powerId,
       images,
       isFeatured,
       isArchived,
@@ -64,11 +70,20 @@ export async function PATCH(
     if (!categoryId) {
       return new NextResponse("categoryId is required", { status: 400 });
     }
-    if (!sizeId) {
-      return new NextResponse("sizeid is required", { status: 400 });
+    if (!typeId) {
+      return new NextResponse("typeid is required", { status: 400 });
     }
-    if (!colorId) {
-      return new NextResponse("color is required", { status: 400 });
+    if (!brandId) {
+      return new NextResponse("brandid is required", { status: 400 });
+    }
+    if (!locationId) {
+      return new NextResponse("locationid is required", { status: 400 });
+    }
+    if (!powerId) {
+      return new NextResponse("power id is required", { status: 400 });
+    }
+    if (!rateId) {
+      return new NextResponse("rateid is required", { status: 400 });
     }
     if (!images || !images.length) {
       return new NextResponse("Images are required", { status: 400 });
@@ -101,9 +116,11 @@ export async function PATCH(
         },
         isArchived,
         isFeatured,
-        sizeId,
         categoryId,
-        colorId,
+        brandId,
+        locationId,
+        powerId,
+        typeId,
         storeId: params.storeId,
       },
     });

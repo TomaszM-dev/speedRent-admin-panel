@@ -14,8 +14,11 @@ export async function POST(
       name,
       price,
       categoryId,
-      typeId,
       brandId,
+      typeId,
+      locationId,
+      rateId,
+      powerId,
       images,
       isFeatured,
       isArchived,
@@ -23,6 +26,21 @@ export async function POST(
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+    if (!typeId) {
+      return new NextResponse("type is required", { status: 400 });
+    }
+    if (!brandId) {
+      return new NextResponse("brand is required", { status: 400 });
+    }
+    if (!locationId) {
+      return new NextResponse("location is required", { status: 400 });
+    }
+    if (!powerId) {
+      return new NextResponse("power is required", { status: 400 });
+    }
+    if (!rateId) {
+      return new NextResponse("rate is required", { status: 400 });
     }
 
     if (!name) {
@@ -34,12 +52,7 @@ export async function POST(
     if (!categoryId) {
       return new NextResponse("categoryId is required", { status: 400 });
     }
-    if (!brandId) {
-      return new NextResponse("sizeid is required", { status: 400 });
-    }
-    if (!typeId) {
-      return new NextResponse("color is required", { status: 400 });
-    }
+
     if (!images || !images.length) {
       return new NextResponse("Images are required", { status: 400 });
     }
@@ -71,8 +84,11 @@ export async function POST(
         isArchived,
         isFeatured,
         brandId,
-        categoryId,
+        locationId,
+        powerId,
         typeId,
+        rateId,
+        categoryId,
         storeId: params.storeId,
       },
     });
@@ -93,6 +109,9 @@ export async function GET(
     const categoryId = searchParams.get("categoryId") || undefined;
     const typeId = searchParams.get("typeId") || undefined;
     const brandId = searchParams.get("brandId") || undefined;
+    const powerId = searchParams.get("powerId") || undefined;
+    const locationId = searchParams.get("locationId") || undefined;
+    const rateId = searchParams.get("rateId") || undefined;
     const isFeatured = searchParams.get("isFeatured");
 
     if (!params.storeId) {
@@ -105,6 +124,9 @@ export async function GET(
         categoryId,
         typeId,
         brandId,
+        powerId,
+        locationId,
+        rateId,
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
@@ -113,6 +135,9 @@ export async function GET(
         category: true,
         type: true,
         brand: true,
+        power: true,
+        location: true,
+        rate: true,
       },
       orderBy: {
         createdAt: "desc",

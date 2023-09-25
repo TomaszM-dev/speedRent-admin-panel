@@ -14,7 +14,7 @@ interface BrandClientProps {
   data: BrandColumn[];
 }
 
-export const SizeClient: React.FC<BrandClientProps> = ({ data }) => {
+export const BrandClient: React.FC<BrandClientProps> = ({ data }) => {
   const router = useRouter();
   const params = useParams();
 

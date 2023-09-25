@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 import React from "react";
-import { SizeClient } from "./components/client";
+import { BrandClient } from "./components/client";
 
 import { format } from "date-fns";
 import { BrandColumn } from "./components/columns";
@@ -24,7 +24,7 @@ const BrandPage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 px-8 py-6">
-        <SizeClient data={formatBrands} />
+        <BrandClient data={formatBrands} />
       </div>
     </div>
   );
