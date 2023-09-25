@@ -27,6 +27,11 @@ const ProductPage = async ({
       storeId: params.storeId,
     },
   });
+  const locations = await prismadb.location.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
 
   const types = await prismadb.type.findMany({
     where: {
@@ -41,6 +46,7 @@ const ProductPage = async ({
           categories={categories}
           types={types}
           brands={brands}
+          locations={locations}
           initialData={product}
         />
       </div>

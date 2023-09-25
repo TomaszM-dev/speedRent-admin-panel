@@ -23,6 +23,7 @@ model Store {
   types      Type[]      @relation("StoreToType")
   products   Product[]   @relation("StoreToProduct")
   orders     Order[]     @relation("StoreToOrder")
+  locations  Location[]  @relation("StoreToLocation")
 }
 
 model Billboard {
@@ -81,6 +82,19 @@ model Type {
   @@index([storeId])
 }
 
+model Location {
+  id      String @id @default(uuid())
+  storeId String
+  name    String
+  store   Store  @relation("StoreToLocation", fields: [storeId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@index([storeId])
+}
+
 model Product {
   id         String      @id @default(uuid())
   storeId    String
@@ -98,10 +112,13 @@ model Product {
   images     Image[]
   orderItems OrderItem[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String
 
   @@index([storeId])
+  @@index([locationId])
   @@index([brandId])
   @@index([categoryId])
   @@index([typeId])

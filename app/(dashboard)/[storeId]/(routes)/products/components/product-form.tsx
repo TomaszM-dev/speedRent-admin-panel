@@ -1,5 +1,12 @@
 "use client";
-import { Category, Type, Image, Product, Brand } from "@prisma/client";
+import {
+  Category,
+  Type,
+  Image,
+  Product,
+  Brand,
+  Location,
+} from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
@@ -41,6 +48,7 @@ const formShema = z.object({
   brandId: z.string().min(2),
   typeId: z.string().min(2),
   categoryId: z.string().min(2),
+  locationId: z.string().min(2),
 
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
@@ -57,6 +65,7 @@ interface ProductFormProps {
   categories: Category[];
   types: Type[];
   brands: Brand[];
+  locations: Location[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
@@ -64,6 +73,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   categories,
   types,
   brands,
+  locations,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -92,6 +102,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           categoryId: "",
           typeId: "",
           brandId: "",
+          locationId: "",
           isFeatured: false,
           isArchived: false,
         },
@@ -311,6 +322,40 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     </FormControl>
                     <SelectContent>
                       {types.map((item) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="locationId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder={"Select Location"}
+                        ></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {locations?.map((item) => {
                         return (
                           <SelectItem key={item.id} value={item.id}>
                             {item.name}
