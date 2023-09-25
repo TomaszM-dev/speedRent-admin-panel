@@ -14,8 +14,8 @@ export async function POST(
       name,
       price,
       categoryId,
-      colorId,
-      sizeId,
+      typeId,
+      brandId,
       images,
       isFeatured,
       isArchived,
@@ -34,10 +34,10 @@ export async function POST(
     if (!categoryId) {
       return new NextResponse("categoryId is required", { status: 400 });
     }
-    if (!sizeId) {
+    if (!brandId) {
       return new NextResponse("sizeid is required", { status: 400 });
     }
-    if (!colorId) {
+    if (!typeId) {
       return new NextResponse("color is required", { status: 400 });
     }
     if (!images || !images.length) {
@@ -70,9 +70,9 @@ export async function POST(
         },
         isArchived,
         isFeatured,
-        sizeId,
+        brandId,
         categoryId,
-        colorId,
+        typeId,
         storeId: params.storeId,
       },
     });
@@ -91,8 +91,8 @@ export async function GET(
   try {
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId") || undefined;
-    const colorId = searchParams.get("colorId") || undefined;
-    const sizeId = searchParams.get("sizeId") || undefined;
+    const typeId = searchParams.get("typeId") || undefined;
+    const brandId = searchParams.get("brandId") || undefined;
     const isFeatured = searchParams.get("isFeatured");
 
     if (!params.storeId) {
@@ -103,16 +103,16 @@ export async function GET(
       where: {
         storeId: params.storeId,
         categoryId,
-        colorId,
-        sizeId,
+        typeId,
+        brandId,
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
       include: {
         images: true,
         category: true,
-        color: true,
-        size: true,
+        type: true,
+        brand: true,
       },
       orderBy: {
         createdAt: "desc",

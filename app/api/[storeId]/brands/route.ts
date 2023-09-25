@@ -10,7 +10,7 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, value } = body;
+    const { name } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -18,9 +18,6 @@ export async function POST(
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
-    }
-    if (!value) {
-      return new NextResponse("Value is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -38,13 +35,13 @@ export async function POST(
       return new NextResponse("StoreId is required", { status: 400 });
     }
 
-    const size = await prismadb.size.create({
-      data: { value, name, storeId: params.storeId },
+    const brand = await prismadb.brand.create({
+      data: { name, storeId: params.storeId },
     });
 
-    return NextResponse.json(size);
+    return NextResponse.json(brand);
   } catch (error) {
-    console.log("[SIZE_POST]", error);
+    console.log("[brand_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -58,15 +55,15 @@ export async function GET(
       return new NextResponse("StoreId is required", { status: 400 });
     }
 
-    const sizes = await prismadb.size.findMany({
+    const brands = await prismadb.brand.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(sizes);
+    return NextResponse.json(brands);
   } catch (error) {
-    console.log("[SIZE_GET]", error);
+    console.log("[brand_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

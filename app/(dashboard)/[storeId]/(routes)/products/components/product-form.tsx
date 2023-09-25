@@ -1,5 +1,5 @@
 "use client";
-import { Category, Type, Image, Product, Size, Store } from "@prisma/client";
+import { Category, Type, Image, Product, Brand } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
@@ -38,7 +38,7 @@ const formShema = z.object({
   name: z.string().min(2),
   images: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
-  sizeId: z.string().min(2),
+  brandId: z.string().min(2),
   typeId: z.string().min(2),
   categoryId: z.string().min(2),
 
@@ -56,14 +56,14 @@ interface ProductFormProps {
     | null;
   categories: Category[];
   types: Type[];
-  sizes: Size[];
+  brands: Brand[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
   initialData,
   categories,
   types,
-  sizes,
+  brands,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -91,7 +91,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           price: 0,
           categoryId: "",
           typeId: "",
-          sizeId: "",
+          brandId: "",
           isFeatured: false,
           isArchived: false,
         },
@@ -257,10 +257,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="sizeId"
+              name="brandId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Size</FormLabel>
+                  <FormLabel>Brand</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
@@ -271,12 +271,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder={"Select a size"}
+                          placeholder={"Select a brand"}
                         ></SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {sizes.map((item) => {
+                      {brands.map((item) => {
                         return (
                           <SelectItem key={item.id} value={item.id}>
                             {item.name}

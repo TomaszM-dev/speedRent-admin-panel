@@ -14,10 +14,10 @@ import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { SizeColumn } from "./columns";
+import { BrandColumn } from "./columns";
 
 interface CellActionProps {
-  data: SizeColumn;
+  data: BrandColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -28,15 +28,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Size Id copied to the clipboard");
+    toast.success("Brand Id copied to the clipboard");
   };
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/brands/${data.id}`);
       router.refresh();
-      router.push(`/${params.storeId}/sizes`);
-      toast.success("Size Deleted");
+      router.push(`/${params.storeId}/brands`);
+      toast.success("Brand Deleted");
     } catch (error) {
       toast.error("Make sure you removed all categories ");
     } finally {
@@ -67,7 +67,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
+            onClick={() => router.push(`/${params.storeId}/brands/${data.id}`)}
           >
             <Edit className="w-4 h-4 mr-2" />
             Update

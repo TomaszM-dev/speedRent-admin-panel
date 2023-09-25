@@ -1,5 +1,5 @@
 "use client";
-import { Size, Store } from "@prisma/client";
+import { Brand, Store } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
@@ -27,44 +27,42 @@ import ImageUpload from "@/components/ui/image-upload";
 
 const formShema = z.object({
   name: z.string().min(2),
-  value: z.string().min(1),
 });
 
-type SizeValueForm = z.infer<typeof formShema>;
+type BrandValueForm = z.infer<typeof formShema>;
 
-export const SizeForm = ({ initialData }: { initialData: Size | null }) => {
+export const BrandForm = ({ initialData }: { initialData: Brand | null }) => {
   const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Size " : "Create Size";
-  const description = initialData ? "Edit Size " : "Add a new Size";
-  const toastMessage = initialData ? "Size Updated " : "Size Created";
+  const title = initialData ? "Edit Brand " : "Create Brand";
+  const description = initialData ? "Edit Brand " : "Add a new Brand";
+  const toastMessage = initialData ? "Brand Updated " : "Brand Created";
   const action = initialData ? "Save Changes " : "Create ";
 
-  const form = useForm<SizeValueForm>({
+  const form = useForm<BrandValueForm>({
     resolver: zodResolver(formShema),
     defaultValues: initialData || {
       name: "",
-      value: "",
     },
   });
 
-  const onSubmit = async (data: SizeValueForm) => {
+  const onSubmit = async (data: BrandValueForm) => {
     try {
       setLoading(true);
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/sizes/${params.sizeId}`,
+          `/api/${params.storeId}/brands/${params.brandId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/sizes`, data);
+        await axios.post(`/api/${params.storeId}/brands`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/sizes`);
+      router.push(`/${params.storeId}/brands`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
@@ -76,12 +74,12 @@ export const SizeForm = ({ initialData }: { initialData: Size | null }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
+      await axios.delete(`/api/${params.storeId}/brands/${params.brandId}`);
       router.refresh();
-      router.push(`/${params.storeId}/sizes`);
-      toast.success("Size deleted.");
+      router.push(`/${params.storeId}/brands`);
+      toast.success("Brand deleted.");
     } catch (error: any) {
-      toast.error("Make sure you removed all sizes using this  first.");
+      toast.error("Make sure you removed all brands using this  first.");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -126,24 +124,7 @@ export const SizeForm = ({ initialData }: { initialData: Size | null }) => {
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder={`Size name`}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder={`Size value`}
+                      placeholder={`Brand name`}
                       {...field}
                     />
                   </FormControl>

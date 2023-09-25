@@ -19,7 +19,7 @@ model Store {
   updatedAt  DateTime    @updatedAt
   billboards Billboard[] @relation("StoreToBillboard")
   categories Category[]  @relation("StoreToCategory")
-  sizes      Size[]      @relation("StoreToSize")
+  brands     Brand[]     @relation("StoreToBrand")
   types      Type[]      @relation("StoreToType")
   products   Product[]   @relation("StoreToProduct")
   orders     Order[]     @relation("StoreToOrder")
@@ -54,12 +54,12 @@ model Category {
   @@index([billboardId])
 }
 
-model Size {
+model Brand {
   id      String @id @default(uuid())
   storeId String // Foreign Key to Store
   name    String
-  value   String
-  store   Store  @relation("StoreToSize", fields: [storeId], references: [id])
+
+  store Store @relation("StoreToBrand", fields: [storeId], references: [id])
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -89,9 +89,9 @@ model Product {
   price      Decimal
   isFeatured Boolean     @default(false)
   isArchived Boolean     @default(false)
-  sizeId     String
+  brandId    String
   typeId     String
-  size       Size        @relation(fields: [sizeId], references: [id])
+  brand      Brand       @relation(fields: [brandId], references: [id])
   store      Store       @relation("StoreToProduct", fields: [storeId], references: [id])
   category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   type       Type        @relation(fields: [typeId], references: [id])
@@ -102,7 +102,7 @@ model Product {
   updatedAt DateTime @updatedAt
 
   @@index([storeId])
-  @@index([sizeId])
+  @@index([brandId])
   @@index([categoryId])
   @@index([typeId])
 }
