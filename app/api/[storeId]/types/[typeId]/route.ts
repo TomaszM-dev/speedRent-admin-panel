@@ -34,13 +34,16 @@ export async function PATCH(
 
     const body = await req.json();
 
-    const { name } = body;
+    const { name, imageUrl } = body;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
+    }
+    if (!imageUrl) {
       return new NextResponse("Name is required", { status: 400 });
     }
 
@@ -65,6 +68,7 @@ export async function PATCH(
       },
       data: {
         name,
+        imageUrl,
       },
     });
 

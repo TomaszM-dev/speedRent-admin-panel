@@ -1,5 +1,5 @@
 "use client";
-import { Billboard, Category, Store } from "@prisma/client";
+import { Category, Store } from "@prisma/client";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Store as StoreIcon, Trash } from "lucide-react";
@@ -35,20 +35,15 @@ import { isIfStatement } from "typescript";
 
 const formShema = z.object({
   name: z.string().min(2),
-  billboardId: z.string().min(1),
 });
 
 type CategoryValueProps = z.infer<typeof formShema>;
 
 interface CategoryFormProps {
   initialData: Category | null;
-  billboards: Billboard[];
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
-  initialData,
-  billboards,
-}) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const origin = useOrigin();
@@ -64,7 +59,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     resolver: zodResolver(formShema),
     defaultValues: initialData || {
       name: "",
-      billboardId: "",
     },
   });
 
@@ -153,40 +147,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="billboardId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Billboard</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder={"Select a billboard"}
-                        ></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {billboards.map((item) => {
-                        return (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.label}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

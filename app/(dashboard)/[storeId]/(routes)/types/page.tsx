@@ -18,7 +18,7 @@ const TypesPage = async ({ params }: { params: { storeId: string } }) => {
   const formattedTypes: TypeColumn[] = types.map((item) => ({
     id: item.id,
     name: item.name,
-    value: item.value,
+    imageUrl: item.imageUrl,
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
   return (

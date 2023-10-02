@@ -12,49 +12,35 @@ datasource db {
 }
 
 model Store {
-  id         String      @id @default(uuid())
-  name       String
-  userId     String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  billboards Billboard[] @relation("StoreToBillboard")
-  categories Category[]  @relation("StoreToCategory")
-  brands     Brand[]     @relation("StoreToBrand")
-  types      Type[]      @relation("StoreToType")
-  products   Product[]   @relation("StoreToProduct")
-  orders     Order[]     @relation("StoreToOrder")
-  locations  Location[]  @relation("StoreToLocation")
-  rates      Rate[]      @relation("StoreToRate")
-  powers     Power[]     @relation("StoreToPower")
-}
+  id        String   @id @default(uuid())
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-model Billboard {
-  id         String     @id @default(uuid())
-  storeId    String
-  label      String
-  imageUrl   String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  store      Store      @relation("StoreToBillboard", fields: [storeId], references: [id])
-  categories Category[]
-
-  @@index([storeId])
+  categories Category[] @relation("StoreToCategory")
+  brands     Brand[]    @relation("StoreToBrand")
+  types      Type[]     @relation("StoreToType")
+  products   Product[]  @relation("StoreToProduct")
+  orders     Order[]    @relation("StoreToOrder")
+  locations  Location[] @relation("StoreToLocation")
+  rates      Rate[]     @relation("StoreToRate")
+  powers     Power[]    @relation("StoreToPower")
 }
 
 model Category {
-  id          String    @id @default(uuid())
-  storeId     String // Foreign Key to Store
-  billboardId String // Foreign Key to Billboard
-  name        String
-  billboard   Billboard @relation(fields: [billboardId], references: [id])
-  store       Store     @relation("StoreToCategory", fields: [storeId], references: [id])
-  products    Product[] @relation("CategoryToProduct")
+  id      String @id @default(uuid())
+  storeId String // Foreign Key to Store
+
+  name String
+
+  store    Store     @relation("StoreToCategory", fields: [storeId], references: [id])
+  products Product[] @relation("CategoryToProduct")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([storeId])
-  @@index([billboardId])
 }
 
 model Brand {
@@ -72,11 +58,11 @@ model Brand {
 }
 
 model Type {
-  id      String @id @default(uuid())
-  storeId String
-  name    String
-  store   Store  @relation("StoreToType", fields: [storeId], references: [id])
-
+  id        String    @id @default(uuid())
+  storeId   String
+  name      String
+  store     Store     @relation("StoreToType", fields: [storeId], references: [id])
+  imageUrl  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   products  Product[]

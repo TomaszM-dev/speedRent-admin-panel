@@ -27,6 +27,7 @@ import ImageUpload from "@/components/ui/image-upload";
 
 const formShema = z.object({
   name: z.string().min(2),
+  imageUrl: z.string().min(1),
 });
 
 type TypeValueForm = z.infer<typeof formShema>;
@@ -47,6 +48,7 @@ export const TypeForm = ({ initialData }: { initialData: Type | null }) => {
     resolver: zodResolver(formShema),
     defaultValues: initialData || {
       name: "",
+      imageUrl: "",
     },
   });
 
@@ -114,7 +116,7 @@ export const TypeForm = ({ initialData }: { initialData: Type | null }) => {
           className="space-y-8 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8 items-center">
             <FormField
               control={form.control}
               name="name"
@@ -126,6 +128,24 @@ export const TypeForm = ({ initialData }: { initialData: Type | null }) => {
                       disabled={loading}
                       placeholder={`Type name`}
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Icon Image</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value ? [field.value] : []}
+                      disabled={loading}
+                      onChange={(url) => field.onChange(url)}
+                      onRemove={() => field.onChange("")}
                     />
                   </FormControl>
                   <FormMessage />
