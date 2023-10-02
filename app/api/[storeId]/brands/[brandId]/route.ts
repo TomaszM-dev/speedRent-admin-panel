@@ -101,7 +101,7 @@ export async function DELETE(
 
     return NextResponse.json(brand);
   } catch (error) {
-    console.log("[BILLBOARD_DELETE]", error);
+    console.log("[BRAND_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
