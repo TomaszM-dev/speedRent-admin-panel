@@ -2,7 +2,9 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import { BsFilterRight } from "react-icons/bs";
+import { AiOutlineClose } from "react-icons/ai";
 
 const MainNav = ({
   className,
@@ -10,6 +12,8 @@ const MainNav = ({
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
   const params = useParams();
+
+  const [mobileNav, setMobileNav] = useState(false);
 
   const routes = [
     {
@@ -66,22 +70,65 @@ const MainNav = ({
   ];
 
   return (
-    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
-            route.active
-              ? "text-black dark:text-white "
-              : "text-muted-foreground"
-          )}
+    <>
+      <nav
+        className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+      >
+        {routes.map((route) => (
+          <Link
+            key={route.href}
+            href={route.href}
+            className={cn(
+              "text-sm font-medium transition-colors hover:text-primary max-xl:hidden ",
+              route.active
+                ? "text-black dark:text-white "
+                : "text-muted-foreground"
+            )}
+          >
+            {route.label}
+          </Link>
+        ))}
+
+        {mobileNav === false ? (
+          <BsFilterRight
+            onClick={() => setMobileNav(!mobileNav)}
+            className="text-3xl xl:hidden cursor-pointer"
+          />
+        ) : (
+          <AiOutlineClose
+            onClick={() => setMobileNav(!mobileNav)}
+            className="text-2xl xl:hidden cursor-pointer"
+          />
+        )}
+      </nav>
+      {mobileNav && (
+        <div
+          onClick={() => setMobileNav(false)}
+          className="absolute top-16 left-0 w-full h-screen bg-opacity-50  bg-gray-100 transition-all"
         >
-          {route.label}
-        </Link>
-      ))}
-    </nav>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute top-0 left-0 w-[30%] max-lg:w-[100%] h-full bg-white z-10 shadow-md transition-all  flex flex-col text-center gap-8 p-10 pt-28 max-sm:pt-16"
+          >
+            {routes.map((route) => (
+              <Link
+                onClick={() => setMobileNav(false)}
+                key={route.href}
+                href={route.href}
+                className={cn(
+                  "text-[1.1rem] font-semibold  transition-colors hover:text-primary ",
+                  route.active
+                    ? "text-black dark:text-white "
+                    : "text-muted-foreground"
+                )}
+              >
+                {route.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -114,7 +114,7 @@ export const BrandForm = ({ initialData }: { initialData: Brand | null }) => {
           className="space-y-8 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-8">
             <FormField
               control={form.control}
               name="name"

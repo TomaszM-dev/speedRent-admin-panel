@@ -116,7 +116,7 @@ export const TypeForm = ({ initialData }: { initialData: Type | null }) => {
           className="space-y-8 w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="grid grid-cols-3 gap-8 items-center">
+          <div className="grid grid-cols-3 gap-8 items-center max-sm:grid-cols-1">
             <FormField
               control={form.control}
               name="name"

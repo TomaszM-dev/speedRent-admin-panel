@@ -32,7 +32,7 @@ export const CategoriesClient: React.FC<CategoriesClientProps> = ({ data }) => {
             router.push(`/${params.storeId}/categories/new`);
           }}
         >
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-4 h-4 mr-2 " />
           Add New
         </Button>
       </div>
